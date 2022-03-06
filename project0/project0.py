@@ -2,8 +2,8 @@ import urllib.request
 import PyPDF2
 import tempfile
 import re
-
-COLUMN_NUM = 5 # keeps track of number of columns in incident summarys
+import sqlite3
+import os
 
 def download(url):
     # headers for request so not to spam website
@@ -34,18 +34,21 @@ def extractincidents(filename):
     pdfReader = PyPDF2.pdf.PdfFileReader(pdf_file)
     page_count = pdfReader.getNumPages()
 
-    for pagenum in range (9, 10):
+    for pagenum in range(page_count):
         page = pdfReader.getPage(pagenum).extractText()
         page = re.split(r"([0-9]*/[0-9]*/[0-9]* [0-9]*:*[0-9]*:*[0-9]*)", page)
-        print(page)
+
         # removes misc info from first page if current page is first page
         if pagenum == 0:
             page = page[1:] # removes column headers for first page
             page[-1] = page[-1].replace("NORMAN POLICE DEPARTMENT\nDaily Incident Summary (Public)\n", "") # removes title header
 
+        # removes footer info from last page
+        if pagenum == page_count-1:
+            page = page[0:-1]
         page = list(filter(None, page)) # removes any empty entries, happens on pages after first page where column headers would be
         num_incidents_page = int(len(page)/2) # counts number of incidents on page
-
+        
         # loops through each incident to add information to incidents list
         for incid in range(num_incidents_page):
             incid_details = list()
@@ -59,18 +62,67 @@ def extractincidents(filename):
             # if the only entries were date, incident #, and incident ori
             if len(non_date_details) == 1:
                 # fills in unknown for location and nature
-                incid_details.append("unknown") 
-                incid_details.append("unknown")
+                incid_details.append("Unknown") 
+                incid_details.append("Unknown")
                 incid_details.append(non_date_details[-1])
-                non_date_details.pop(-1)
-            #print(incid_details)
 
+            # double lined location
+            elif len(non_date_details) == 4:
+                incid_details.append(non_date_details[0]+non_date_details[1])
+                incid_details.append(non_date_details[2])
+                incid_details.append(non_date_details[3])
+
+            # standard case
+            else:
+                incid_details.append(non_date_details[0])
+                incid_details.append(non_date_details[1])
+                incid_details.append(non_date_details[2])
+
+            incidents.append(incid_details)
+    return(incidents)
 
 def createdb():
-    pass
+    db_filename = "/tmp/normanpd.db"
 
-def populatedb(incidents):
-    pass
+    # removes old database created under same name if it exists
+    if os.path.exists(db_filename):
+        os.remove(db_filename)
+
+    # connect to database and creates it (since deleted if it did exist)
+    connection = sqlite3.connect(db_filename)
+    connection.execute(''' CREATE TABLE incidents (
+        incident_time TEXT,
+        incident_number TEXT,
+        incident_location TEXT,
+        nature TEXT,
+        incident_ori TEXT);''')
+
+    # commit the changes to db and close the connection
+    connection.commit()
+    connection.close()
+
+    return db_filename
+
+
+def populatedb(db, incidents):
+    # opens connection and gets cursor
+    connection = sqlite3.connect(db)
+    cursor = connection.cursor()
+
+    # insert the list of incidents into db
+    cursor.executemany('INSERT INTO incidents VALUES(?,?,?,?,?);', incidents); #need semicolon??????
+    #print('We have inserted', cursor.rowcount, 'records to the table.')
+
+    # commit the changes to db and close the connection
+    connection.commit()
+    connection.close()
+
 
 def status(db):
-    pass
+    connection = sqlite3.connect(db)
+    cursor = connection.cursor()
+    cursor.execute('SELECT nature, count(nature) FROM incidents GROUP BY nature ORDER BY count(nature) DESC, nature') 
+    results = cursor.fetchall()
+
+    for result in results:
+        print(result[0]+"|"+str(result[1]))

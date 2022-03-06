@@ -9,13 +9,13 @@ def main(url):
     incidents = project0.extractincidents(filename)
 	
     # Create new database
-    #db = project0.createdb()
+    db = project0.createdb()
 	
     # Insert data
-    #project0.populatedb(db, incidents)
+    project0.populatedb(db, incidents)
 	
     # Print incident counts
-    #project0.status(db)
+    project0.status(db)
 
 
 if __name__ == '__main__':

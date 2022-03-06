@@ -1,6 +1,11 @@
 WhatIsMyBrowser | https://www.whatismybrowser.com/detect/what-is-my-user-agent/ | Helped identify non-mac user agent
 w3schools | https://www.w3schools.com/python/python_file_write.asp | Helped get correct syntax to write to file
 Stackoverflow | https://stackoverflow.com/questions/2136556/in-python-how-do-i-split-a-string-and-keep-the-separators | Helped figure out how to keep date when splitting based on date
-Tutorialdeep | https://tutorialdeep.com/knowhow/remove-substring-from-string-python/ | For removing header from first page
+Tutorialdeep | https://tutorialdeep.com/knowhow/remove-substring-from-string-python/ | Helped to remove header from first page
 w3schools | https://www.w3schools.com/python/ref_string_count.asp | Confirmed syntax for count() for strings
 dataofish | https://datatofish.com/remove-empty-strings-from-list/ | Helped to understand how to remove empty strings from list
+Python | https://docs.python.org/3.8/library/sqlite3.html | Official docs for sqlite3 and python
+Tutorialspoint | https://www.tutorialspoint.com/sqlite/sqlite_python.htm | Helped double check syntax for using sqlite3 and python
+w3schools | https://www.w3schools.com/python/python_file_remove.asp | Helped to to remove file if it exists
+pythonexamples | https://pythonexamples.org/python-sqlite3-insert-multiple-rows-to-table/ | Helped to understand how to batch insert data into table
+https://database.guide/combine-sqlite-count-with-group-by-to-add-a-count-column-to-your-result-set/
