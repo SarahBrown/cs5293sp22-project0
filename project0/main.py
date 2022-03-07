@@ -2,9 +2,14 @@ import argparse
 import project0
 
 def main(url):
-    # Download data
-    filename = project0.download(url)
+    # Download data or load local file
 
+    # check to see if http is included in the url
+    # if http is included, need to download pdf
+    if "http" in url[0:4]:
+        filename = project0.download(url)
+    else:
+        filename = url
     # Extract data
     incidents = project0.extractincidents(filename)
 	

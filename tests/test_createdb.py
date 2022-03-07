@@ -5,7 +5,7 @@ def test_createdb():
     db = project0.createdb()
 
     # checks to see if db file was created
-    assert os.path.exists("/tmp/normanpd.db")
+    assert os.path.exists("resources/normanpd.db")
 
     # checks to see if returned file name is correct
-    assert db == "/tmp/normanpd.db"
+    assert db == "resources/normanpd.db"

@@ -10,19 +10,14 @@ def download(url):
     headers = {}
     headers['User-Agent'] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0"
 
-    # check to see if http is included in the url
-    # if http is included, need to download pdf
-    if "http" in url[0:4]:
-        data = urllib.request.urlopen(urllib.request.Request(url, headers=headers)).read()
-        filename = "/tmp/" + url.split("/")[-1]
 
-        # open a file with filename and write binary content. will overwrite any previous content.
-        f = open(filename, "wb") 
-        f.write(data)
-        f.close()
-    # if http is not included, load local file
-    else:
-        filename =  "/tmp/" + url
+    data = urllib.request.urlopen(urllib.request.Request(url, headers=headers)).read()
+    filename = "resources/" + url.split("/")[-1]
+
+    # open a file with filename and write binary content. will overwrite any previous content.
+    f = open(filename, "wb") 
+    f.write(data)
+    f.close()
 
     return filename
 
@@ -82,7 +77,7 @@ def extractincidents(filename):
     return(incidents)
 
 def createdb():
-    db_filename = "/tmp/normanpd.db"
+    db_filename = "resources/normanpd.db"
 
     # removes old database created under same name if it exists
     if os.path.exists(db_filename):
