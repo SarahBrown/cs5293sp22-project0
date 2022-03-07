@@ -7,5 +7,5 @@ dataofish | https://datatofish.com/remove-empty-strings-from-list/ | Helped to u
 Python | https://docs.python.org/3.8/library/sqlite3.html | Official docs for sqlite3 and python
 Tutorialspoint | https://www.tutorialspoint.com/sqlite/sqlite_python.htm | Helped double check syntax for using sqlite3 and python
 w3schools | https://www.w3schools.com/python/python_file_remove.asp | Helped to to remove file if it exists
-pythonexamples | https://pythonexamples.org/python-sqlite3-insert-multiple-rows-to-table/ | Helped to understand how to batch insert data into table
-https://database.guide/combine-sqlite-count-with-group-by-to-add-a-count-column-to-your-result-set/
+Pythonexamples | https://pythonexamples.org/python-sqlite3-insert-multiple-rows-to-table/ | Helped to understand how to batch insert data into table
+Database.Guide |  https://database.guide/combine-sqlite-count-with-group-by-to-add-a-count-column-to-your-result-set/ | Helped understand sqlite3 syntax for counting by group
