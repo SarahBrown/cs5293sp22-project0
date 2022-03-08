@@ -9,3 +9,4 @@ Tutorialspoint | https://www.tutorialspoint.com/sqlite/sqlite_python.htm | Helpe
 w3schools | https://www.w3schools.com/python/python_file_remove.asp | Helped to to remove file if it exists
 Pythonexamples | https://pythonexamples.org/python-sqlite3-insert-multiple-rows-to-table/ | Helped to understand how to batch insert data into table
 Database.Guide |  https://database.guide/combine-sqlite-count-with-group-by-to-add-a-count-column-to-your-result-set/ | Helped understand sqlite3 syntax for counting by group
+TomOrdonez | https://www.tomordonez.com/get-schema-sqlite-python/ | Helped to understand how to get the schema in SQLite with Python

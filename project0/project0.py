@@ -1,33 +1,42 @@
-import urllib.request
+import os
 import PyPDF2
-import tempfile
 import re
 import sqlite3
-import os
+import tempfile
+import urllib.request
+
 
 def download(url):
     # headers for request so not to spam website
     headers = {}
     headers['User-Agent'] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0"
 
+    # check to see if http is included in the url
+    # if http is included, need to download pdf
+    if "http" in url[0:4]:
+        data = urllib.request.urlopen(urllib.request.Request(url, headers=headers)).read()
+        filename = "resources/" + url.split("/")[-1]
 
-    data = urllib.request.urlopen(urllib.request.Request(url, headers=headers)).read()
-    filename = "resources/" + url.split("/")[-1]
-
-    # open a file with filename and write binary content. will overwrite any previous content.
-    f = open(filename, "wb") 
-    f.write(data)
-    f.close()
+        # open a file with filename and write binary content. will overwrite any previous content.
+        f = open(filename, "wb") 
+        f.write(data)
+        f.close()
+    else:
+        filename = "resources/" + url
 
     return filename
 
-def extractincidents(filename):
+def extractincidents(filename, testing):
     incidents = list() # creates empty list to store incidents from pdf file
 
     # opens pdf file, creates a pdfReader, and stores page count
     pdf_file = open(filename, "rb")
     pdfReader = PyPDF2.pdf.PdfFileReader(pdf_file)
     page_count = pdfReader.getNumPages()
+
+    # only reads in first two pages if testing status
+    if testing:
+        page_count = 2
 
     for pagenum in range(page_count):
         page = pdfReader.getPage(pagenum).extractText()
@@ -85,12 +94,7 @@ def createdb():
 
     # connect to database and creates it (since deleted if it did exist)
     connection = sqlite3.connect(db_filename)
-    connection.execute(''' CREATE TABLE incidents (
-        incident_time TEXT,
-        incident_number TEXT,
-        incident_location TEXT,
-        nature TEXT,
-        incident_ori TEXT);''')
+    connection.execute("CREATE TABLE incidents (incident_time TEXT,incident_number TEXT,incident_location TEXT,nature TEXT,incident_ori TEXT);")
 
     # commit the changes to db and close the connection
     connection.commit()
@@ -105,7 +109,7 @@ def populatedb(db, incidents):
     cursor = connection.cursor()
 
     # insert the list of incidents into db
-    cursor.executemany('INSERT INTO incidents VALUES(?,?,?,?,?);', incidents); #need semicolon??????
+    cursor.executemany("INSERT INTO incidents VALUES(?,?,?,?,?);", incidents)
     #print('We have inserted', cursor.rowcount, 'records to the table.')
 
     # commit the changes to db and close the connection
@@ -113,11 +117,14 @@ def populatedb(db, incidents):
     connection.close()
 
 
-def status(db):
+def status(db, print_status):
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
-    cursor.execute('SELECT nature, count(nature) FROM incidents GROUP BY nature ORDER BY count(nature) DESC, nature') 
+    cursor.execute("SELECT nature, count(nature) FROM incidents GROUP BY nature ORDER BY count(nature) DESC, nature") 
     results = cursor.fetchall()
 
-    for result in results:
-        print(result[0]+"|"+str(result[1]))
+    if (print_status):
+        for result in results:
+            print(result[0]+"|"+str(result[1]))
+
+    return results

@@ -1,17 +1,14 @@
 import argparse
+
 import project0
 
 def main(url):
     # Download data or load local file
+    filename = project0.download(url)
 
-    # check to see if http is included in the url
-    # if http is included, need to download pdf
-    if "http" in url[0:4]:
-        filename = project0.download(url)
-    else:
-        filename = url
     # Extract data
-    incidents = project0.extractincidents(filename)
+    testing = False # if testing status, only reads in first 2 pages
+    incidents = project0.extractincidents(filename, testing)
 	
     # Create new database
     db = project0.createdb()
@@ -19,9 +16,9 @@ def main(url):
     # Insert data
     project0.populatedb(db, incidents)
 	
-    # Print incident counts
-    project0.status(db)
-
+    # Print incident counts and stores results in variable for testing
+    print_status = True
+    results = project0.status(db, print_status)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

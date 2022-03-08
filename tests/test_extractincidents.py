@@ -1,7 +1,7 @@
 from project0 import project0
 
 def test_extractincidents():
-    incidents = project0.extractincidents("resources/2022-02-01_daily_incident_summary.pdf")
+    incidents = project0.extractincidents("resources/2022-02-01_daily_incident_summary.pdf", False)
 
     num_incidents = 392
     incident0 = ["2/1/2022 0:04","2022-00001588","15300 E LINDSEY ST","MVA With Injuries","14005"] # first entry
