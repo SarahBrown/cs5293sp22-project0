@@ -7,6 +7,20 @@ import urllib.request
 
 
 def download(url):
+    """
+    Download function to prepare pdf for processing.
+    Checks to see if file is local or if it needs to be downloaded.
+    
+    Parameters
+    ----------
+    url : str
+        The url to download or location of local file.
+
+    Returns
+    -------
+    filename
+        Location of file in resources folder.
+    """
     # headers for request so not to spam website
     headers = {}
     headers['User-Agent'] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0"
@@ -27,6 +41,23 @@ def download(url):
     return filename
 
 def extractincidents(filename, testing):
+    """
+    Function to remove separate incidents from pdf.
+    
+    Parameters
+    ----------
+    filename : str
+        Location of file in resources folder.
+    
+    testing: boolean
+        Boolean flag to determine page count used. 
+        Two pages used during testing as that could be hand counted.
+
+    Returns
+    -------
+    incidents
+        List of incidents extracted from the pdf.
+    """
     incidents = list() # creates empty list to store incidents from pdf file
 
     # opens pdf file, creates a pdfReader, and stores page count
@@ -86,6 +117,14 @@ def extractincidents(filename, testing):
     return(incidents)
 
 def createdb():
+    """
+    Function to create sqlite database based.
+
+    Returns
+    -------
+    db_filename
+        Location of database in resources folder.
+    """
     db_filename = "resources/normanpd.db"
 
     # removes old database created under same name if it exists
@@ -104,6 +143,17 @@ def createdb():
 
 
 def populatedb(db, incidents):
+    """
+    Function to populate database.
+    
+    Parameters
+    ----------
+    db: str
+        Location of database in resources folder.
+    
+    incidents: list
+        Extracted incidents to insert into database.
+    """
     # opens connection and gets cursor
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
@@ -118,6 +168,23 @@ def populatedb(db, incidents):
 
 
 def status(db, print_status):
+    """
+    Function to report database status.
+    
+    Parameters
+    ----------
+    db : str
+        Location of file in resources folder.
+    
+    print_status: boolean
+        Boolean flag to determine if status should be printed. 
+        Printing is disabled during testing to avoid any potential errors.
+
+    Returns
+    -------
+    results
+        Status report in list form.
+    """
     # opens connection and gets cursor
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
@@ -125,6 +192,8 @@ def status(db, print_status):
     # selects from nature and groups based on count of nature and sorts
     cursor.execute("SELECT nature, count(nature) FROM incidents GROUP BY nature ORDER BY count(nature) DESC, nature") 
     results = cursor.fetchall()
+
+    connection.close()
 
     # if requested, print status. flag added to avoid printing during testing
     if (print_status):

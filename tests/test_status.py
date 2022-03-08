@@ -15,4 +15,3 @@ def test_status():
 
     # checks that number of incidents from input equals number of rows added to table
     assert results == known_results
-

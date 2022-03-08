@@ -3,6 +3,7 @@ import argparse
 import project0
 
 def main(url):
+    """Main function to start the program."""
     # Download data or load local file
     filename = project0.download(url)
 
@@ -23,7 +24,7 @@ def main(url):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--incidents", type=str, required=True, 
-                         help="Incident summary url.")
+                         help="Incident summary url or local file stored in resources folder.")
      
     args = parser.parse_args()
     if args.incidents:

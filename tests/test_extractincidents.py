@@ -1,6 +1,7 @@
 from project0 import project0
 
 def test_extractincidents():
+    # loads incidents
     incidents = project0.extractincidents("resources/2022-02-01_daily_incident_summary.pdf", False)
 
     num_incidents = 392
