@@ -11,8 +11,8 @@ def test_populatedb():
     # checks that number of incidents from input equals number of rows added to table
     connection = sqlite3.connect("resources/normanpd.db")
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM incidents")
+    cursor.execute("SELECT * FROM incidents") # fetches all rows
     results = cursor.fetchall()
     connection.close()
 
-    assert len(results) == len(incidents)
+    assert len(results) == len(incidents) # compares lengths

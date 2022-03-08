@@ -118,11 +118,15 @@ def populatedb(db, incidents):
 
 
 def status(db, print_status):
+    # opens connection and gets cursor
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
+
+    # selects from nature and groups based on count of nature and sorts
     cursor.execute("SELECT nature, count(nature) FROM incidents GROUP BY nature ORDER BY count(nature) DESC, nature") 
     results = cursor.fetchall()
 
+    # if requested, print status. flag added to avoid printing during testing
     if (print_status):
         for result in results:
             print(result[0]+"|"+str(result[1]))
