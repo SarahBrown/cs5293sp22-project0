@@ -2,7 +2,6 @@ import os
 import PyPDF2
 import re
 import sqlite3
-import tempfile
 import urllib.request
 
 
@@ -36,7 +35,7 @@ def download(url):
         f.write(data)
         f.close()
     else:
-        filename = "resources/" + url
+        filename = url
 
     return filename
 
@@ -90,7 +89,6 @@ def extractincidents(filename, testing):
             incid_details.append(page[incid*2])
             non_date_details = page[incid*2+1]
             non_date_details = list(filter(None, non_date_details.split("\n")))
-            entries = len(non_date_details)
             incid_details.append(non_date_details[0])
             non_date_details.pop(0)
 
